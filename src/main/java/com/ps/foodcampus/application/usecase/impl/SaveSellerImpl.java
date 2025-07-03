@@ -39,7 +39,6 @@ public class SaveSellerImpl implements SaveSellerUseCase {
 
             sellerRepository.saveSeller(sellerMapper.toSeller(sellerDTO));
 
-            return null;
         } catch (Exception e) {
             throw new RuntimeException("Error saving seller: " + e.getMessage(), e);
         }
