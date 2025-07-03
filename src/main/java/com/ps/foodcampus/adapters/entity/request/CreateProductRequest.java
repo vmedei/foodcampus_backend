@@ -10,4 +10,5 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Builder
 public class CreateProductRequest {
+    private String name;
 }
