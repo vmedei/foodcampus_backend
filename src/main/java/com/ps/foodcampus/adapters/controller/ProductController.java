@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/products")
 public class ProductController {
 
-    private SaveProductUseCase saveProductUseCase;
-    public ProductController(SaveProductUseCase saveProductUseCase) {
-        this.saveProductUseCase = saveProductUseCase;
-    }
+//    private SaveProductUseCase saveProductUseCase;
+//    public ProductController(SaveProductUseCase saveProductUseCase) {
+//        this.saveProductUseCase = saveProductUseCase;
+//    }
 
 //    @PostMapping
 //    public String createProduct(CreateProductRequest createProductRequest) {
