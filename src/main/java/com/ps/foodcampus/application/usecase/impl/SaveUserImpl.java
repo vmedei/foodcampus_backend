@@ -41,8 +41,8 @@ public class SaveUserImpl implements SaveUserUseCase {
 
             return userRepository.saveUser(user);
 
-        } catch (Exception e) {
-            log.error("Error while save user: "+e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("Error while save user: {}", e.getMessage());
             throw e;
         }
     }

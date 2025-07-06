@@ -10,10 +10,12 @@ import com.ps.foodcampus.application.usecase.SaveSellerUseCase;
 import com.ps.foodcampus.domain.mapper.SellerDomainMapper;
 import com.ps.foodcampus.domain.model.Seller;
 import com.ps.foodcampus.domain.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Slf4j
 @Component
 public class SaveSellerImpl implements SaveSellerUseCase {
     private SellerDomainMapper sellerMapper;
@@ -42,8 +44,9 @@ public class SaveSellerImpl implements SaveSellerUseCase {
             seller.setUser(user);
             sellerRepository.saveSeller(seller);
 
-        } catch (Exception e) {
-            throw new RuntimeException("Error saving seller: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("Error while saving seller {}", e.getMessage());
+            throw e;
         }
     }
 }

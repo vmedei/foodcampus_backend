@@ -6,8 +6,8 @@ import com.ps.foodcampus.application.service.SaveSellerService;
 import com.ps.foodcampus.application.usecase.SaveSellerUseCase;
 import com.ps.foodcampus.application.usecase.SaveUserUseCase;
 import com.ps.foodcampus.domain.dto.CreateSellerDTO;
-import com.ps.foodcampus.domain.dto.SellerDTO;
 import com.ps.foodcampus.domain.model.User;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,6 +21,7 @@ public class SaveSellerServiceImpl implements SaveSellerService {
     }
 
     @Override
+    @Transactional
     public void execute(CreateSellerDTO sellerDTO) throws AlreadyExistsException, InvalidDataException {
         sellerDTO.getUser().setType("vendedor");
         User user = saveUserUseCase.execute(sellerDTO.getUser());

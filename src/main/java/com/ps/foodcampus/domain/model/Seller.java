@@ -22,6 +22,8 @@ public class Seller {
     private String fantasyName;
     @Column(nullable = false, unique = true)
     private String cpf;
+    @Column(name = "descricao", nullable = false, unique = true)
+    private String description;
     @Column(nullable = false, unique = true)
     private String cnpj;
     @Column(name = "telefone", nullable = false, unique = true)
