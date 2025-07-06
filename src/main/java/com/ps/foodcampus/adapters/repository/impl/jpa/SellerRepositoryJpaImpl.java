@@ -2,8 +2,11 @@ package com.ps.foodcampus.adapters.repository.impl.jpa;
 
 import com.ps.foodcampus.adapters.repository.SellerRepository;
 import com.ps.foodcampus.domain.model.Seller;
+import com.ps.foodcampus.domain.model.User;
 import com.ps.foodcampus.infra.db.jpa.JpaSellerRepository;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 public class SellerRepositoryJpaImpl implements SellerRepository {
@@ -18,7 +21,7 @@ public class SellerRepositoryJpaImpl implements SellerRepository {
     }
 
     @Override
-    public boolean existsByCnpjOrEmailOrCpf(String cnpj, String email, String cpf) {
-        return false;
+    public boolean existsByCnpjOrCpf(String cnpj, String cpf) {
+        return jpaSellerRepository.existsByCnpjOrCpf(cnpj, cpf);
     }
 }

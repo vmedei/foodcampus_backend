@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JpaSellerRepository extends JpaRepository<Seller, Long> {
-    boolean existsByCnpjOrEmailOrCpf(String cnpj, String email, String cpf);
+    boolean existsByCnpjOrCpf(String cnpj, String cpf);
 }
