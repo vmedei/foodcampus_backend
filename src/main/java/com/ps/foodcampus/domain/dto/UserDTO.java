@@ -11,4 +11,5 @@ import org.springframework.stereotype.Component;
 @Builder
 public class UserDTO {
     private String email;
+    private String type;
 }
