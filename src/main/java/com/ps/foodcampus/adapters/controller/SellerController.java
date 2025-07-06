@@ -1,12 +1,12 @@
 package com.ps.foodcampus.adapters.controller;
 
-import com.ps.foodcampus.domain.dto.SellerDTO;
+import com.ps.foodcampus.application.service.SaveSellerService;
 import com.ps.foodcampus.adapters.entity.mapper.SellerMapper;
 import com.ps.foodcampus.adapters.entity.request.CreateSellerRequest;
 import com.ps.foodcampus.application.exceptions.AlreadyExistsException;
 import com.ps.foodcampus.application.exceptions.InvalidDataException;
-import com.ps.foodcampus.application.usecase.SaveSellerUseCase;
 import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,25 +18,25 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/sellers")
+@RequestMapping("/api/v1/sellers")
 public class SellerController {
 
-    private final SaveSellerUseCase saveSellerUseCase;
+    private final SaveSellerService saveSellerService;
     private final SellerMapper sellerMapper;
 
-    public SellerController(SaveSellerUseCase saveSellerUseCase, SellerMapper sellerMapper) {
-        this.saveSellerUseCase = saveSellerUseCase;
+    public SellerController(SaveSellerService saveSellerService, SellerMapper sellerMapper) {
+        this.saveSellerService = saveSellerService;
         this.sellerMapper = sellerMapper;
     }
 
     @PostMapping
     public ResponseEntity<Map<String, ?>> createSeller(@RequestBody CreateSellerRequest createSellerRequest) {
         try {
-            saveSellerUseCase.execute(sellerMapper.toSellerDTO(createSellerRequest));
+            saveSellerService.execute(sellerMapper.toDTO(createSellerRequest));
 
             return ResponseEntity.status(HttpStatus.CREATED).body(
                     Map.of("message", "Seller created successfully",
-                            "seller", sellerMapper.toSellerResponse(createSellerRequest))
+                            "seller", sellerMapper.toResponse(createSellerRequest))
             );
         } catch (InvalidDataException exception) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", exception.getMessage()));

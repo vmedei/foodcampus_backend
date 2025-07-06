@@ -1,16 +1,21 @@
 package com.ps.foodcampus.application.usecase.impl;
 
-import com.ps.foodcampus.adapters.entity.mapper.SellerMapper;
 import com.ps.foodcampus.adapters.repository.SellerRepository;
 import com.ps.foodcampus.application.exceptions.AlreadyExistsException;
 import com.ps.foodcampus.application.exceptions.InvalidDataException;
 import com.ps.foodcampus.application.utils.ValidateDataPersonUtils;
 import com.ps.foodcampus.application.utils.ValidateDataSellerUtils;
-import com.ps.foodcampus.domain.dto.SellerDTO;
+import com.ps.foodcampus.domain.dto.CreateSellerDTO;
 import com.ps.foodcampus.application.usecase.SaveSellerUseCase;
 import com.ps.foodcampus.domain.mapper.SellerDomainMapper;
+import com.ps.foodcampus.domain.model.Seller;
+import com.ps.foodcampus.domain.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
+@Slf4j
 @Component
 public class SaveSellerImpl implements SaveSellerUseCase {
     private SellerDomainMapper sellerMapper;
@@ -22,25 +27,26 @@ public class SaveSellerImpl implements SaveSellerUseCase {
     }
 
     @Override
-    public void execute(SellerDTO sellerDTO) {
+    public void execute(CreateSellerDTO sellerDTO, User user) throws AlreadyExistsException, InvalidDataException {
         try {
             if (!ValidateDataPersonUtils.isValidCPF(sellerDTO.getCpf())) {
                 throw new InvalidDataException("CPF");
             }
-            if (!ValidateDataSellerUtils.isValidEmail(sellerDTO.getUser().getEmail())) {
-                throw new InvalidDataException("Email");
-            }
             if(!ValidateDataSellerUtils.isValidCNPJ(sellerDTO.getCnpj())) {
                 throw new InvalidDataException("CNPJ");
             }
-            if (sellerRepository.existsByCnpjOrEmailOrCpf(sellerDTO.getCnpj(), sellerDTO.getUser().getEmail(), sellerDTO.getCpf())) {
+            if (sellerRepository.existsByCnpjOrCpf(sellerDTO.getCnpj(), sellerDTO.getCpf())) {
                 throw new AlreadyExistsException("Seller");
             }
 
-            sellerRepository.saveSeller(sellerMapper.toSeller(sellerDTO));
+            Seller seller = sellerMapper.fromCreateDTO(sellerDTO);
+            seller.setDataCadastro(new Date());
+            seller.setUser(user);
+            sellerRepository.saveSeller(seller);
 
-        } catch (Exception e) {
-            throw new RuntimeException("Error saving seller: " + e.getMessage(), e);
+        } catch (IllegalArgumentException e) {
+            log.error("Error while saving seller {}", e.getMessage());
+            throw e;
         }
     }
 }
