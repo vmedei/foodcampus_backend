@@ -10,4 +10,5 @@ import org.mapstruct.Mapper;
 public interface SellerMapper {
     CreateSellerDTO toDTO(CreateSellerRequest seller);
     SellerResponse toResponse(CreateSellerRequest seller);
+    SellerResponse toResponse(SellerDTO sellerDTO);
 }

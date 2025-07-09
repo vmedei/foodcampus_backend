@@ -7,6 +7,7 @@ import com.ps.foodcampus.infra.db.jpa.JpaSellerRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class SellerRepositoryJpaImpl implements SellerRepository {
@@ -24,4 +25,15 @@ public class SellerRepositoryJpaImpl implements SellerRepository {
     public boolean existsByCnpjOrCpf(String cnpj, String cpf) {
         return jpaSellerRepository.existsByCnpjOrCpf(cnpj, cpf);
     }
+
+    @Override
+    public boolean existsByStoreCode(String storeCode) {
+        return jpaSellerRepository.existsByStoreCode(storeCode);
+    }
+
+    @Override
+    public Optional<Seller> findByStoreCode(String storeCode) {
+        return jpaSellerRepository.findByStoreCode(storeCode);
+    }
+
 }

@@ -5,6 +5,10 @@ import com.ps.foodcampus.adapters.entity.mapper.CustomerMapper;
 import com.ps.foodcampus.adapters.entity.request.CreateCustomerRequest;
 import com.ps.foodcampus.application.exceptions.AlreadyExistsException;
 import com.ps.foodcampus.application.exceptions.InvalidDataException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.http.HttpStatus;
@@ -19,6 +23,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/customers")
+@Tag(name = "Clientes", description = "Endpoins relacionados aos clientes")
 public class CustomerController {
 
     private final SaveCustomerService saveCustomerService;
@@ -29,6 +34,13 @@ public class CustomerController {
         this.customerMapper = customerMapper;
     }
 
+    @Operation(summary = "Cria um novo cliente",
+            description = "Recebe os dados do cliente, valida e salva no sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Cliente criado com sucesso"),
+            @ApiResponse(responseCode = "403", description = "Dados inválidos ou cliente já existe"),
+            @ApiResponse(responseCode = "500", description = "Erro interno ao criar cliente")
+    })
     @PostMapping
     public ResponseEntity<Map<String, ?>> createCustomer(@RequestBody CreateCustomerRequest createCustomerRequest) {
         try {

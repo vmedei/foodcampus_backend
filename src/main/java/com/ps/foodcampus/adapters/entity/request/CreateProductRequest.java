@@ -11,4 +11,7 @@ import org.springframework.stereotype.Component;
 @Builder
 public class CreateProductRequest {
     private String name;
+    private String description;
+    private Double price;
+    private String base64Image;
 }

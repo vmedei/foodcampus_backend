@@ -14,6 +14,4 @@ public class CreateProductDTO {
     private String description;
     private Double price;
     private String base64Image;
-    private boolean active;
-    private CreateSellerDTO seller;
 }
