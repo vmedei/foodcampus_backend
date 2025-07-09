@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserResponse {
-    private String email;
-    private String type;
+public class CustomerResponse {
+    private String name;
+    private UserResponse user;
 }
