@@ -36,10 +36,10 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.type.toUpperCase() == UserTypeEnum.VENDEDOR.toString()) {
-            return List.of(new SimpleGrantedAuthority("VENDEDOR"), new SimpleGrantedAuthority("CLIENTE"));
+        if (this.type.toUpperCase().equals(UserTypeEnum.VENDEDOR.toString())) {
+            return List.of(new SimpleGrantedAuthority("ROLE_VENDEDOR"), new SimpleGrantedAuthority("ROLE_CLIENTE"));
         }
-        return List.of(new SimpleGrantedAuthority("CLIENTE"));
+        return List.of(new SimpleGrantedAuthority("ROLE_CLIENTE"));
     }
 
     @Override
