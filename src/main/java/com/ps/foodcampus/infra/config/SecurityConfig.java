@@ -2,6 +2,7 @@ package com.ps.foodcampus.infra.config;
 
 import com.ps.foodcampus.infra.security.SecurityFilter;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -33,15 +35,18 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/api/v1/customers").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/sellers").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/products").hasRole("VENDEDOR")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-                        })
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            log.error("Access DENIED for request {}", request.getRequestURI());
                             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
+                        })
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            log.error("Access UNAUTHORIZED for request {}", request.getRequestURI());
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
                         })
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

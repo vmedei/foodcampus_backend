@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "vendedores")
 @Entity
@@ -33,6 +34,9 @@ public class Seller {
     private User user;
     @Column(name = "data_cadastro", nullable = false)
     private Date dataCadastro;
-
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Product> products;
+    @Column(name = "codigo_loja")
+    private String storeCode;
 
 }
