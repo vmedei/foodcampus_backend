@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserResponse {
-    private String email;
-    private String type;
+public class AuthenticatedUserResponse {
+    private String response;
+    private UserResponse user;
+    private String token;
 }
