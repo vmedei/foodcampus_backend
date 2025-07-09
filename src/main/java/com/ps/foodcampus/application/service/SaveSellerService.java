@@ -8,5 +8,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface SaveSellerService {
-    void execute(CreateSellerDTO sellerDTO) throws AlreadyExistsException, InvalidDataException;
+    SellerDTO execute(CreateSellerDTO sellerDTO) throws AlreadyExistsException, InvalidDataException;
 }

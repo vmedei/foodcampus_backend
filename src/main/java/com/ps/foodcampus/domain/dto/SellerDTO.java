@@ -17,4 +17,5 @@ public class SellerDTO {
     private String phone;
     private String description;
     private UserDTO user;
+    private String storeCode;
 }

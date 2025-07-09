@@ -9,6 +9,7 @@ import com.ps.foodcampus.domain.dto.CreateUserDTO;
 import com.ps.foodcampus.domain.mapper.UserDomainMapper;
 import com.ps.foodcampus.domain.model.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +32,7 @@ public class SaveUserImpl implements SaveUserUseCase {
                 throw new InvalidDataException("Email");
             }
             if (userRepository.existsByEmail(userDTO.getEmail())) {
-                throw new AlreadyExistsException("Seller");
+                throw new AlreadyExistsException("User");
             }
 
             User user = userMapper.fromCreateDTO(userDTO);
@@ -41,7 +42,7 @@ public class SaveUserImpl implements SaveUserUseCase {
 
             return userRepository.saveUser(user);
 
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | DataIntegrityViolationException e) {
             log.error("Error while save user: {}", e.getMessage());
             throw e;
         }

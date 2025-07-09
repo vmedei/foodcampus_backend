@@ -1,5 +1,7 @@
 package com.ps.foodcampus.domain.dto;
 
+import com.ps.foodcampus.domain.model.Seller;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -10,11 +12,11 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Builder
 public class ProductDTO {
+    private Long id;
+    private SellerDTO seller;
     private String name;
-    private String fantasyName;
-    private String email;
-    private String cpf;
-    private String cnpj;
-    private String phone;
-    private UserDTO user;
+    private String description;
+    private Double price;
+    private String base64Image;
+    private boolean active;
 }
