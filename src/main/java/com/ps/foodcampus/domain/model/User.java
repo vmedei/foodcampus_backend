@@ -34,6 +34,9 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user")
     private Seller seller;
 
+    @OneToOne(mappedBy = "user")
+    private Customer customer;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.type.toUpperCase().equals(UserTypeEnum.VENDEDOR.toString())) {
