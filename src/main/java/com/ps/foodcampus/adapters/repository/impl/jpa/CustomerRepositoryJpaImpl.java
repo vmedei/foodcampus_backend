@@ -6,7 +6,6 @@ import com.ps.foodcampus.domain.model.User;
 import com.ps.foodcampus.infra.db.jpa.JpaCustomerRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.Optional;
 
 @Component
