@@ -47,6 +47,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/products").hasRole("VENDEDOR")
                         .requestMatchers(HttpMethod.POST, "/api/v1/setores/agendamento").hasRole("VENDEDOR")
                         .requestMatchers(HttpMethod.GET, "/api/v1/setores/meus-agendamentos").hasRole("VENDEDOR")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/setores/agendamento/*/status").hasRole("VENDEDOR")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex

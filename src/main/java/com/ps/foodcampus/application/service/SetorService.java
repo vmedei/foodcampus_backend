@@ -18,4 +18,6 @@ public interface SetorService {
     void agendarVendedor(CreateAgendamentoRequest request, String userEmail);
     
     List<VendedorAgendadoResponse> listarAgendamentosVendedor(String userEmail);
+    
+    void atualizarStatusAgendamento(Long agendamentoId, String status, String userEmail);
 } 

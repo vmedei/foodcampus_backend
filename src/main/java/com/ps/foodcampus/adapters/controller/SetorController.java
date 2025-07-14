@@ -96,4 +96,24 @@ public class SetorController {
         List<VendedorAgendadoResponse> agendamentos = setorService.listarAgendamentosVendedor(authentication.getName());
         return ResponseEntity.ok(agendamentos);
     }
+    
+    @PutMapping("/agendamento/{agendamentoId}/status")
+    @PreAuthorize("hasRole('VENDEDOR')")
+    @Operation(summary = "Atualizar status do agendamento",
+               description = "Permite que um vendedor atualize o status do seu agendamento")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Status atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Status inválido"),
+            @ApiResponse(responseCode = "403", description = "Acesso negado - apenas vendedores podem atualizar agendamentos"),
+            @ApiResponse(responseCode = "404", description = "Agendamento não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
+    public ResponseEntity<Map<String, String>> atualizarStatusAgendamento(
+            @PathVariable Long agendamentoId,
+            @RequestBody Map<String, String> request,
+            Authentication authentication) {
+        log.info("Requisição para atualizar status do agendamento {} para {}", agendamentoId, request.get("status"));
+        setorService.atualizarStatusAgendamento(agendamentoId, request.get("status"), authentication.getName());
+        return ResponseEntity.ok(Map.of("message", "Status atualizado com sucesso!"));
+    }
 } 

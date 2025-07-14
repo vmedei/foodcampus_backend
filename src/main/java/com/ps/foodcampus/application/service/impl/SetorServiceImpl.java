@@ -151,4 +151,40 @@ public class SetorServiceImpl implements SetorService {
         
         return agendamentoVendedorMapper.toVendedorAgendadoResponseList(agendamentos);
     }
+    
+    @Override
+    @Transactional
+    public void atualizarStatusAgendamento(Long agendamentoId, String status, String userEmail) {
+        log.info("Atualizando status do agendamento {} para {} pelo usuário {}", agendamentoId, status, userEmail);
+        
+        // Validar status
+        StatusAgendamento novoStatus;
+        try {
+            novoStatus = StatusAgendamento.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new InvalidDataException("Status inválido: " + status);
+        }
+        
+        // Buscar usuário e vendedor
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+        
+        Seller seller = sellerRepository.findByUser(user)
+                .orElseThrow(() -> new NotFoundException("Vendedor não encontrado"));
+        
+        // Buscar agendamento
+        AgendamentoVendedor agendamento = agendamentoVendedorRepository.findById(agendamentoId)
+                .orElseThrow(() -> new NotFoundException("Agendamento não encontrado"));
+        
+        // Verificar se o agendamento pertence ao vendedor
+        if (!agendamento.getVendedor().getId().equals(seller.getId())) {
+            throw new InvalidDataException("Você só pode atualizar seus próprios agendamentos");
+        }
+        
+        // Atualizar status
+        agendamento.setStatus(novoStatus);
+        agendamentoVendedorRepository.save(agendamento);
+        
+        log.info("Status do agendamento {} atualizado para {}", agendamentoId, novoStatus);
+    }
 } 
