@@ -33,7 +33,7 @@ public class User implements UserDetails {
     private Date dataCadastro;
     @OneToOne(mappedBy = "user")
     private Seller seller;
-    
+
     @OneToOne(mappedBy = "user")
     private Customer customer;
 
