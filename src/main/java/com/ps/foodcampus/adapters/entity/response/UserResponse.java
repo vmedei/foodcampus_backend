@@ -12,4 +12,5 @@ import org.springframework.stereotype.Component;
 public class UserResponse {
     private String email;
     private String type;
+    private String name;
 }

@@ -7,6 +7,7 @@ import com.ps.foodcampus.infra.db.jpa.JpaCustomerRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class CustomerRepositoryJpaImpl implements CustomerRepository {
@@ -15,9 +16,14 @@ public class CustomerRepositoryJpaImpl implements CustomerRepository {
     public CustomerRepositoryJpaImpl(JpaCustomerRepository jpaCustomerRepository) {
         this.jpaCustomerRepository = jpaCustomerRepository;
     }
+    
     @Override
     public void saveCustomer(Customer customer) {
         jpaCustomerRepository.save(customer);
     }
 
+    @Override
+    public Optional<Customer> findByUser(User user) {
+        return jpaCustomerRepository.findByUser(user);
+    }
 }
