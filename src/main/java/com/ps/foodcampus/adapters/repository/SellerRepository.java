@@ -12,4 +12,5 @@ public interface SellerRepository {
     boolean existsByCnpjOrCpf(String cnpj, String cpf);
     boolean existsByStoreCode(String storeCode);
     Optional<Seller> findByStoreCode(String storeCode);
+    Optional<Seller> findByUser(User user);
 }

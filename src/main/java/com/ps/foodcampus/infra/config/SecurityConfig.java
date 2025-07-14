@@ -41,7 +41,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/sellers").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/setores").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/setores/*/vendedores").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/products").hasRole("VENDEDOR")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/setores/agendamento").hasRole("VENDEDOR")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/setores/meus-agendamentos").hasRole("VENDEDOR")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
