@@ -22,7 +22,8 @@ public class Product {
     private String description;
     @Column(name = "preco", nullable = false)
     private Double price;
-    @Column(name = "base_64_image", nullable = false)
+    @Lob
+    @Column(name = "base_64_image", nullable = false, columnDefinition = "LONGTEXT")
     private String base64Image;
     @Column(name = "ativo", nullable = false)
     private boolean active;

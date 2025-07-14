@@ -73,12 +73,14 @@ public class ProductController {
             List<ProductResponse> productList;
 
             if (storeCode != null && !storeCode.isEmpty()) {
+                // Buscar produtos por código da loja específico
                 productList = retrieveProductUseCase.findProductsBySeller(storeCode)
                         .stream()
                         .map(productMapper::fromDTO)
                         .toList();
             } else {
-                productList = retrieveProductUseCase.findAllProducts()
+                // Buscar apenas produtos do vendedor logado
+                productList = retrieveProductUseCase.findProductsByLoggedSeller()
                         .stream()
                         .map(productMapper::fromDTO)
                         .toList();
@@ -91,7 +93,7 @@ public class ProductController {
 
         } catch (Exception e) {
             return ResponseEntity.internalServerError()
-                    .body(Map.of("error", "Internal error while creating seller"));
+                    .body(Map.of("error", "Internal error while retrieving products"));
         }
     }
 
