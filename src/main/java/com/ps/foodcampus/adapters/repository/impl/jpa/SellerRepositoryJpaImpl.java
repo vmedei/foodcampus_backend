@@ -6,7 +6,6 @@ import com.ps.foodcampus.domain.model.User;
 import com.ps.foodcampus.infra.db.jpa.JpaSellerRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.Optional;
 
 @Component
@@ -34,6 +33,11 @@ public class SellerRepositoryJpaImpl implements SellerRepository {
     @Override
     public Optional<Seller> findByStoreCode(String storeCode) {
         return jpaSellerRepository.findByStoreCode(storeCode);
+    }
+
+    @Override
+    public Optional<Seller> findByUser(User user) {
+        return jpaSellerRepository.findByUser(user);
     }
 
 }

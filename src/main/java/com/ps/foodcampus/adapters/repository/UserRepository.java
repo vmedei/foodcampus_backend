@@ -1,8 +1,9 @@
 package com.ps.foodcampus.adapters.repository;
 
 import com.ps.foodcampus.domain.model.User;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public interface UserRepository {
@@ -10,5 +11,5 @@ public interface UserRepository {
 
     boolean existsByEmail(String email);
 
-    User findByEmail(String email);
+    Optional<User> findByEmail(String email);
 }
