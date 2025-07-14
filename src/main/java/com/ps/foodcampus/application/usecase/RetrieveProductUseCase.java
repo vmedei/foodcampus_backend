@@ -9,4 +9,5 @@ import java.util.List;
 public interface RetrieveProductUseCase {
     List<ProductDTO> findAllProducts();
     List<ProductDTO> findProductsBySeller(String storeCode);
+    List<ProductDTO> findProductsByLoggedSeller();
 }
