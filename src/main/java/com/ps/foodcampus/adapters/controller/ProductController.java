@@ -8,6 +8,8 @@ import com.ps.foodcampus.application.exceptions.InvalidDataException;
 import com.ps.foodcampus.application.exceptions.NotFoundException;
 import com.ps.foodcampus.application.usecase.RetrieveProductUseCase;
 import com.ps.foodcampus.application.usecase.SaveProductUseCase;
+import com.ps.foodcampus.application.utils.AuthenticationUtil;
+import com.ps.foodcampus.domain.model.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -61,7 +64,7 @@ public class ProductController {
         }
     }
     @Operation(summary = "Recupera produtos",
-            description = "Recupera todos os produtos ou filtra por código da loja")
+            description = "Recupera todos os produtos para o cliente ou produtos do vendedor logado ou produtos de um vendedor específico")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Produtos recuperados com sucesso"),
             @ApiResponse(responseCode = "403", description = "Dados inválidos ou produto não encontrado"),
@@ -71,16 +74,20 @@ public class ProductController {
     public ResponseEntity<Map<String, ?>> retrieveProducts(@RequestParam(required = false) String storeCode) {
         try {
             List<ProductResponse> productList;
+            User loggedUser = AuthenticationUtil.getAuthenticatedUser();
 
             if (storeCode != null && !storeCode.isEmpty()) {
-                // Buscar produtos por código da loja específico
                 productList = retrieveProductUseCase.findProductsBySeller(storeCode)
                         .stream()
                         .map(productMapper::fromDTO)
                         .toList();
-            } else {
-                // Buscar apenas produtos do vendedor logado
+            } else if(loggedUser != null && !Objects.isNull(loggedUser.getSeller())) {
                 productList = retrieveProductUseCase.findProductsByLoggedSeller()
+                        .stream()
+                        .map(productMapper::fromDTO)
+                        .toList();
+            } else {
+                productList = retrieveProductUseCase.findAllProducts()
                         .stream()
                         .map(productMapper::fromDTO)
                         .toList();
