@@ -19,5 +19,6 @@ public class VendedorAgendadoResponse {
     private LocalDateTime dataFim;
     private String status;
     private String observacoes;
+    private String storeCode;
     private SetorSimpleResponse setor;
 } 

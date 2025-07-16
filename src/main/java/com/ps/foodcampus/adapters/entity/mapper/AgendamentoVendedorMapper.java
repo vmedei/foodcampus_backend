@@ -30,6 +30,7 @@ public class AgendamentoVendedorMapper {
                 .dataFim(agendamento.getDataFim())
                 .status(agendamento.getStatus().name())
                 .observacoes(agendamento.getObservacoes())
+                .storeCode(agendamento.getVendedor().getStoreCode())
                 .setor(setorMapper.toSimpleResponse(agendamento.getSetor()))
                 .build();
     }
