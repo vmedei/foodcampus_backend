@@ -18,4 +18,5 @@ public interface AgendamentoVendedorRepository {
     List<AgendamentoVendedor> findByVendedorAndDataBetween(Seller vendedor, LocalDateTime inicio, LocalDateTime fim);
     boolean existsConflito(Seller vendedor, LocalDateTime inicio, LocalDateTime fim);
     List<AgendamentoVendedor> findBySetorAndData(Long setorId, LocalDateTime dataInicio, LocalDateTime dataFim);
+    Optional<AgendamentoVendedor> existsScheduling(Seller seller, LocalDateTime currentDate);
 } 
