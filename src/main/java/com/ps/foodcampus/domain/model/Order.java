@@ -14,34 +14,27 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Reserva {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)
-    private Customer cliente;
+    private Customer customer;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agendamento_id", nullable = false)
-    private AgendamentoVendedor agendamento;
+    private AgendamentoVendedor scheduling;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "produto_id", nullable = false)
+    private Product product;
     
-    @Column(name = "data_reserva", nullable = false)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime dataReserva;
-    
-    @Column(name = "quantidade_pessoas")
+    @Column(name = "quantidade")
     @Builder.Default
-    private Integer quantidadePessoas = 1;
-    
-    private String observacoes;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    @Builder.Default
-    private StatusReserva status = StatusReserva.PENDENTE;
-    
+    private Integer quantity = 1;
+
     @Column(name = "criado_em", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime criadoEm;

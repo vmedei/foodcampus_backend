@@ -47,6 +47,6 @@ public class AgendamentoVendedor {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime criadoEm;
     
-    @OneToMany(mappedBy = "agendamento", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Reserva> reservas;
+    @OneToMany(mappedBy = "scheduling", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Order> reservas;
 } 

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface JpaAgendamentoVendedorRepository extends JpaRepository<AgendamentoVendedor, Long> {
@@ -36,9 +37,12 @@ public interface JpaAgendamentoVendedorRepository extends JpaRepository<Agendame
            "((a.dataInicio BETWEEN :inicio AND :fim) OR (a.dataFim BETWEEN :inicio AND :fim) OR " +
            "(a.dataInicio <= :inicio AND a.dataFim >= :fim)) AND " +
            "a.status IN ('AGENDADO', 'ATIVO')")
-    boolean existsConflito(@Param("vendedor") Seller vendedor, 
-                          @Param("inicio") LocalDateTime inicio, 
+    boolean existsConflito(@Param("vendedor") Seller vendedor,
+                          @Param("inicio") LocalDateTime inicio,
                           @Param("fim") LocalDateTime fim);
+
+    @Query("SELECT a FROM AgendamentoVendedor a WHERE a.vendedor = :seller AND :currentDate BETWEEN a.dataInicio AND a.dataFim AND a.status IN ('AGENDADO', 'ATIVO')")
+    Optional<AgendamentoVendedor> existsScheduling(Seller seller, LocalDateTime currentDate);
     
     @Query("SELECT a FROM AgendamentoVendedor a WHERE a.setor.id = :setorId AND " +
            "DATE(a.dataInicio) = DATE(:dataInicio) AND " +
@@ -46,4 +50,7 @@ public interface JpaAgendamentoVendedorRepository extends JpaRepository<Agendame
     List<AgendamentoVendedor> findBySetorAndData(@Param("setorId") Long setorId, 
                                                  @Param("dataInicio") LocalDateTime dataInicio, 
                                                  @Param("dataFim") LocalDateTime dataFim);
+
+    @Query("SELECT a FROM AgendamentoVendedor a WHERE a.id = :id AND a.status IN ('AGENDADO', 'ATIVO')")
+    Optional<AgendamentoVendedor> findByIdAndValidStatus(Long id);
 } 

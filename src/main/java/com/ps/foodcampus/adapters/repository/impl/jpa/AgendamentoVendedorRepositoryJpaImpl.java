@@ -54,4 +54,14 @@ public class AgendamentoVendedorRepositoryJpaImpl implements AgendamentoVendedor
     public List<AgendamentoVendedor> findBySetorAndData(Long setorId, LocalDateTime dataInicio, LocalDateTime dataFim) {
         return jpaAgendamentoVendedorRepository.findBySetorAndData(setorId, dataInicio, dataFim);
     }
+
+    @Override
+    public Optional<AgendamentoVendedor> existsScheduling(Seller seller, LocalDateTime currentDate) {
+        return jpaAgendamentoVendedorRepository.existsScheduling(seller, currentDate);
+    }
+
+    @Override
+    public Optional<AgendamentoVendedor> findByIdAndValidStatus(Long id) {
+        return jpaAgendamentoVendedorRepository.findByIdAndValidStatus(id);
+    }
 } 

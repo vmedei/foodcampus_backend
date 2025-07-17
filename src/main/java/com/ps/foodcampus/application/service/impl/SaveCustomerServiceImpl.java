@@ -23,7 +23,7 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
     @Override
     @Transactional
     public void execute(CreateCustomerDTO customerDTO) throws AlreadyExistsException, InvalidDataException {
-        customerDTO.getUser().setType("CLIENTE");
+        customerDTO.getUser().setType("cliente");
         User user = saveUserUseCase.execute(customerDTO.getUser());
         saveCustomerUseCase.execute(customerDTO, user);
     }
