@@ -2,7 +2,6 @@ package com.ps.foodcampus.adapters.controller;
 
 import com.ps.foodcampus.adapters.entity.mapper.ProductMapper;
 import com.ps.foodcampus.adapters.entity.request.CreateProductRequest;
-import com.ps.foodcampus.adapters.entity.response.ProductResponse;
 import com.ps.foodcampus.application.exceptions.AlreadyExistsException;
 import com.ps.foodcampus.application.exceptions.InvalidDataException;
 import com.ps.foodcampus.application.exceptions.NotFoundException;
@@ -20,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -76,27 +74,27 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<Map<String, ?>> retrieveProducts(@RequestParam(required = false) String storeCode) {
         try {
-            List<ProductResponse> productList;
             User loggedUser = AuthenticationUtil.getAuthenticatedUser();
 
             if (storeCode != null && !storeCode.isEmpty()) {
-                productList = retrieveProductUseCase.findProductsBySeller(storeCode)
+                return ResponseEntity.ok().body(Map.of("products", retrieveProductUseCase.findProductsBySeller(storeCode)
                         .stream()
                         .map(productMapper::fromDTO)
-                        .toList();
-            } else if(loggedUser != null && !Objects.isNull(loggedUser.getSeller())) {
-                productList = retrieveProductUseCase.findProductsByLoggedSeller()
-                        .stream()
-                        .map(productMapper::fromDTO)
-                        .toList();
-            } else {
-                productList = retrieveProductUseCase.findAllProducts()
-                        .stream()
-                        .map(productMapper::fromDTO)
-                        .toList();
+                        .toList()));
             }
 
-            return ResponseEntity.ok().body(Map.of("products", productList));
+            if (loggedUser != null && !Objects.isNull(loggedUser.getSeller())) {
+                return ResponseEntity.ok().body(Map.of("products", retrieveProductUseCase.findProductsByLoggedSeller()
+                        .stream()
+                        .map(productMapper::fromDTO)
+                        .toList()));
+            }
+
+            return ResponseEntity.ok().body(Map.of("products", retrieveProductUseCase.findAllProductsActive()
+                    .stream()
+                    .map(productMapper::toProductCustomerResponse)
+                    .toList()));
+
 
         } catch (InvalidDataException | AlreadyExistsException | NotFoundException exception ) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", exception.getMessage()));

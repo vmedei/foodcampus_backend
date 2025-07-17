@@ -3,6 +3,8 @@ package com.ps.foodcampus.domain.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Table(name = "produtos")
 @Entity
 @Getter @Setter
@@ -27,4 +29,6 @@ public class Product {
     private String base64Image;
     @Column(name = "ativo", nullable = false)
     private boolean active;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders;
 }

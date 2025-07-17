@@ -1,6 +1,5 @@
 package com.ps.foodcampus.adapters.entity.response;
 
-import com.ps.foodcampus.domain.model.Seller;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -10,11 +9,12 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductResponse {
+public class ProductToCustomerResponse {
     private Long id;
     private String name;
     private String description;
     private Double price;
     private String base64Image;
     private SellerResponse seller;
+    private Long schedulingId;
 }

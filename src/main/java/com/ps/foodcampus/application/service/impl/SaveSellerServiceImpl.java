@@ -24,7 +24,7 @@ public class SaveSellerServiceImpl implements SaveSellerService {
     @Override
     @Transactional
     public SellerDTO execute(CreateSellerDTO sellerDTO) throws AlreadyExistsException, InvalidDataException {
-        sellerDTO.getUser().setType("cliente");
+        sellerDTO.getUser().setType("vendedor");
         User user = saveUserUseCase.execute(sellerDTO.getUser());
         return saveSellerUseCase.execute(sellerDTO, user);
     }
