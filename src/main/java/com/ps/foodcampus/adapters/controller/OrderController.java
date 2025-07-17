@@ -78,6 +78,7 @@ public class OrderController {
     public ResponseEntity<Map<String, ?>> getOrdersByCustomerId() {
         try {
             User authenticatedUser = AuthenticationUtil.getAuthenticatedUser();
+            return ResponseEntity.ok(Map.of("orders",  getOrderByCustomerUseCase.execute(authenticatedUser.getCustomer())));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("status", false, "error", "An unexpected error occurred"));
