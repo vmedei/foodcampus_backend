@@ -7,6 +7,7 @@ import com.ps.foodcampus.infra.db.jpa.JpaProductRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ProductRepositoryImpl implements ProductRepository {
@@ -35,5 +36,15 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public List<Product> findBySeller(Seller seller) {
         return jpaProductRepository.findBySeller(seller);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        jpaProductRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Product> findById(Long id) {
+        return jpaProductRepository.findById(id);
     }
 }

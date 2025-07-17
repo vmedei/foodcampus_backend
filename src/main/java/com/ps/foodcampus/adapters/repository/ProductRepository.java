@@ -13,4 +13,6 @@ public interface ProductRepository {
     boolean existsByNameAndSeller(String name, Seller seller);
     List<Product> findAll();
     List<Product> findBySeller(Seller seller);
+    void deleteById(Long id);
+    Optional<Product> findById(Long id);
 }

@@ -8,6 +8,7 @@ import com.ps.foodcampus.application.exceptions.InvalidDataException;
 import com.ps.foodcampus.application.exceptions.NotFoundException;
 import com.ps.foodcampus.application.usecase.RetrieveProductUseCase;
 import com.ps.foodcampus.application.usecase.SaveProductUseCase;
+import com.ps.foodcampus.application.usecase.DeleteProductUseCase;
 import com.ps.foodcampus.application.utils.AuthenticationUtil;
 import com.ps.foodcampus.domain.model.User;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,11 +33,13 @@ public class ProductController {
     private final ProductMapper productMapper;
     private final SaveProductUseCase saveProductUseCase;
     private final RetrieveProductUseCase retrieveProductUseCase;
+    private final DeleteProductUseCase deleteProductUseCase;
 
-    public ProductController(ProductMapper productMapper, SaveProductUseCase saveProductUseCase, RetrieveProductUseCase retrieveProductUseCase) {
+    public ProductController(ProductMapper productMapper, SaveProductUseCase saveProductUseCase, RetrieveProductUseCase retrieveProductUseCase, DeleteProductUseCase deleteProductUseCase) {
         this.productMapper = productMapper;
         this.saveProductUseCase = saveProductUseCase;
         this.retrieveProductUseCase = retrieveProductUseCase;
+        this.deleteProductUseCase = deleteProductUseCase;
     }
 
     @PostMapping
@@ -104,5 +107,23 @@ public class ProductController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Remove um produto",
+            description = "Remove um produto do vendedor logado pelo id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Produto removido com sucesso"),
+            @ApiResponse(responseCode = "403", description = "Não autorizado ou produto não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno ao remover produto")
+    })
+    public ResponseEntity<Map<String, ?>> deleteProduct(@PathVariable Long id) {
+        try {
+            deleteProductUseCase.execute(id);
+            return ResponseEntity.ok().body(Map.of("message", "Produto removido com sucesso"));
+        } catch (NotFoundException exception) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", exception.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(Map.of("error", "Erro interno ao remover produto"));
+        }
+    }
 
 }
