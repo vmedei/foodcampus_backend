@@ -48,7 +48,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/setores/agendamento").hasRole("VENDEDOR")
                         .requestMatchers(HttpMethod.GET, "/api/v1/setores/meus-agendamentos").hasRole("VENDEDOR")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/setores/agendamento/*/status").hasRole("VENDEDOR")
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/orders").hasRole("VENDEDOR")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/orders").hasRole("CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/orders/scheduling/*").hasRole("VENDEDOR")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/orders/seller").hasRole("VENDEDOR")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex

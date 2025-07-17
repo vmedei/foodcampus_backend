@@ -39,4 +39,7 @@ public class Seller {
     @Column(name = "codigo_loja")
     private String storeCode;
 
+    @OneToMany(mappedBy = "vendedor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AgendamentoVendedor> schedulings;
+
 }

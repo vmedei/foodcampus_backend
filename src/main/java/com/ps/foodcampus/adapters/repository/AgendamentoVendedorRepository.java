@@ -19,4 +19,5 @@ public interface AgendamentoVendedorRepository {
     boolean existsConflito(Seller vendedor, LocalDateTime inicio, LocalDateTime fim);
     List<AgendamentoVendedor> findBySetorAndData(Long setorId, LocalDateTime dataInicio, LocalDateTime dataFim);
     Optional<AgendamentoVendedor> existsScheduling(Seller seller, LocalDateTime currentDate);
+    Optional<AgendamentoVendedor> findByIdAndValidStatus(Long id);
 } 

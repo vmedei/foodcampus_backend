@@ -1,6 +1,5 @@
 package com.ps.foodcampus.infra.db.jpa;
 
-import com.ps.foodcampus.adapters.repository.AgendamentoVendedorRepository;
 import com.ps.foodcampus.domain.model.AgendamentoVendedor;
 import com.ps.foodcampus.domain.model.Seller;
 import com.ps.foodcampus.domain.model.Setor;
@@ -10,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,4 +50,7 @@ public interface JpaAgendamentoVendedorRepository extends JpaRepository<Agendame
     List<AgendamentoVendedor> findBySetorAndData(@Param("setorId") Long setorId, 
                                                  @Param("dataInicio") LocalDateTime dataInicio, 
                                                  @Param("dataFim") LocalDateTime dataFim);
+
+    @Query("SELECT a FROM AgendamentoVendedor a WHERE a.id = :id AND a.status IN ('AGENDADO', 'ATIVO')")
+    Optional<AgendamentoVendedor> findByIdAndValidStatus(Long id);
 } 

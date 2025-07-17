@@ -2,11 +2,13 @@ package com.ps.foodcampus.application.usecase.impl;
 
 import com.ps.foodcampus.adapters.repository.AgendamentoVendedorRepository;
 import com.ps.foodcampus.adapters.repository.OrderRepository;
+import com.ps.foodcampus.application.exceptions.ForbiddenException;
 import com.ps.foodcampus.application.exceptions.NotFoundException;
 import com.ps.foodcampus.application.usecase.GetOrderBySchedulingUseCase;
+import com.ps.foodcampus.application.utils.AuthenticationUtil;
 import com.ps.foodcampus.domain.dto.OrderDTO;
 import com.ps.foodcampus.domain.mapper.OrderDomainMapper;
-import com.ps.foodcampus.domain.model.Seller;
+import com.ps.foodcampus.domain.model.AgendamentoVendedor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -27,8 +29,9 @@ public class GetOrderBySchedulingImpl implements GetOrderBySchedulingUseCase {
     }
 
     @Override
-    public List<OrderDTO> execute(Long schedulingId) throws NotFoundException {
-        if (agendamentoVendedorRepository.findById(schedulingId).isEmpty()) {
+    public List<OrderDTO> execute(Long schedulingId) throws NotFoundException, ForbiddenException {
+        AgendamentoVendedor agendamentoVendedor = agendamentoVendedorRepository.findById(schedulingId).orElse(null);
+        if (agendamentoVendedor == null) {
             throw new NotFoundException("Scheduling " + schedulingId);
         }
         return orderRepository.findBySchedulingId(schedulingId)

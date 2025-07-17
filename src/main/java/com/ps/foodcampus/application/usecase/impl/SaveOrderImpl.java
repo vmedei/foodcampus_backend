@@ -15,6 +15,8 @@ import com.ps.foodcampus.domain.model.User;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 @Component
@@ -39,7 +41,7 @@ public class SaveOrderImpl implements SaveOrderUseCase {
     @Override
     @Transactional
     public void execute(CreateOrderDTO orderDetails, User user) throws NotFoundException, InvalidDataException {
-        AgendamentoVendedor scheduling = agendamentoVendedorRepository.findById(orderDetails.getSchedulingId())
+        AgendamentoVendedor scheduling = agendamentoVendedorRepository.findByIdAndValidStatus(orderDetails.getSchedulingId())
                 .orElseThrow(() -> new NotFoundException("Scheduling: " + orderDetails.getSchedulingId()));
         Product product = productRepository.findById(orderDetails.getProductId())
                 .orElseThrow(() -> new NotFoundException("Product: " + orderDetails.getProductId()));
@@ -51,6 +53,7 @@ public class SaveOrderImpl implements SaveOrderUseCase {
                 newOrder.setProduct(product);
                 newOrder.setQuantity(0);
                 newOrder.setCustomer(user.getCustomer());
+                newOrder.setCriadoEm(LocalDateTime.now());
                 return newOrder;
             });
 
